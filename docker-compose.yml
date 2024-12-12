@@ -104,6 +104,29 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+   # Serviço da aplicação Gerador de Senhas
+  gerador_senha:
+    container_name: gerador_senha
+    image: msoftsantana/safepass:latest  # Substitua pelo nome correto da sua imagem de aplicação
+    environment:
+      - HTTPD_PATCHES=${HTTPD_PATCHES}
+      - HTTPD_PREFIX=/usr/local/apache2
+      - HTTPD_SHA256=${HTTPD_SHA256}
+      - HTTPD_VERSION=2.4.59
+      - PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    ports:
+      - "9090:80"  # Porta da aplicação gerador de senha
+    networks:
+      - app
+    labels:
+      - "monitoring=true"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+        tag: "{{.Name}}"
+        
 networks:
   elk:
     driver: bridge
