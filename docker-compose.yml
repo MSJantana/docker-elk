@@ -117,7 +117,7 @@ services:
     ports:
       - "9090:80"  # Porta da aplicação gerador de senha
     networks:
-      - app
+      - elk
     labels:
       - "monitoring=true"
     logging:
