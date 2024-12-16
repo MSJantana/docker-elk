@@ -14,7 +14,7 @@ services:
       # 'config/filebeat.yml' even if it's not owned by root.
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
-    volumes:
+     volumes:
       - ./extensions/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro,Z
       - type: bind
         source: /var/lib/docker/containers
@@ -25,10 +25,10 @@ services:
         target: /var/run/docker.sock
         read_only: true
     environment:
-      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
-      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
-      ELASTIC_USERNAME: ${ELASTIC_USERNAME:-}  # Adicionando o nome de usuário do Elasticsearch
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}  # Adicionando a senha do Elasticsearch
+      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD}
+      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD}
     networks:
       - elk
     depends_on:
