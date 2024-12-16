@@ -27,6 +27,8 @@ services:
     environment:
       FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
       BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
+      ELASTIC_USERNAME: ${ELASTIC_USERNAME:-}  # Adicionando o nome de usuário do Elasticsearch
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}  # Adicionando a senha do Elasticsearch
     networks:
       - elk
     depends_on:
