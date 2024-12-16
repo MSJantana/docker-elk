@@ -130,11 +130,13 @@ services:
     volumes:
       - safepass_logs:/usr/local/apache2/logs  # Volume compartilhado para logs
       - /etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat-compose.yml  # Mapeamento do arquivo de configuração do Filebeat para o container
-
-        
+       
 networks:
   elk:
     driver: bridge
 
 volumes:
   elasticsearch:
+  safepass_log:
+    driver:local
+  
