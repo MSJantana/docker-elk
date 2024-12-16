@@ -95,7 +95,9 @@ services:
       - HTTPD_SHA256=${HTTPD_SHA256}
       - HTTPD_VERSION=2.4.59
       - PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200  # Adicionado para Filebeat se comunicar com Elasticsearch
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME:-}  # Adicione a variável para o nome de usuário
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-}  # Adicione a variável para a senha
     ports:
       - "9090:80"
     networks:
@@ -109,8 +111,9 @@ services:
         max-file: "1"
         tag: "{{.Name}}"
     volumes:
-      - safepass_log:/usr/local/apache2/logs  # Volume compartilhado para logs
-      - /etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat-compose.yml  # Mapeamento do arquivo de configuração do Filebeat para o container
+      - safepass_log:/usr/local/apache2/logs
+      - /etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat-compose.yml
+
 
 networks:
   elk:
