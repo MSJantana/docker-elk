@@ -105,17 +105,18 @@ services:
     restart: unless-stopped
 
    # Serviço da aplicação Gerador de Senhas
-  gerador_senha:
-    container_name: gerador_senha
-    image: msoftsantana/safepass:latest  # Substitua pelo nome correto da sua imagem de aplicação
+  safepass:
+    container_name: safepass
+    image: msoftsantana/safepass:latest
     environment:
       - HTTPD_PATCHES=${HTTPD_PATCHES}
       - HTTPD_PREFIX=/usr/local/apache2
       - HTTPD_SHA256=${HTTPD_SHA256}
       - HTTPD_VERSION=2.4.59
       - PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200  # Adicionado para Filebeat se comunicar com Elasticsearch
     ports:
-      - "9090:80"  # Porta da aplicação gerador de senha
+      - "9090:80"
     networks:
       - elk
     labels:
@@ -126,6 +127,10 @@ services:
         max-size: "1m"
         max-file: "1"
         tag: "{{.Name}}"
+    volumes:
+      - safepass_logs:/usr/local/apache2/logs  # Volume compartilhado para logs
+      - /etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat-compose.yml  # Mapeamento do arquivo de configuração do Filebeat para o container
+
         
 networks:
   elk:
