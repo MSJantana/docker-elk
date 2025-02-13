@@ -40,7 +40,7 @@ services:
     networks:
       - elk
     depends_on:
-      elasticsearch
+      elasticsearch:
       timeout: 5s
 
   logstash:
