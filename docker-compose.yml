@@ -23,9 +23,7 @@ services:
     networks:
       - elk
     depends_on:
-      elasticsearch:
-        condition: service_healthy
-    restart: on-failure
+      - elasticsearch
 
   elasticsearch:
     build:
