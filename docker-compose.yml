@@ -84,8 +84,7 @@ services:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD}
     networks:
       - elk
-    depends_on:
-      depends_on:
+    depends_on:     
       - elasticsearch
     restart: unless-stopped
 
