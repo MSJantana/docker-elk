@@ -104,9 +104,49 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+  safepass:
+    container_name: safepass
+    image: msoftsantana/safepass:latest
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    ports:
+      - "9090:80"
+    networks:
+      - elk
+    labels:
+      service: safepass
+      monitoring: enabled
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+        tag: "{{.Name}}"
+    volumes:
+      - safepass_log:/usr/local/apache2/logs  # Volume nomeado, sem :Z  
+
+  cerebro:
+    container_name: cerebro
+    image: yannart/cerebro
+    ports:
+      - "9000:9000"
+    networks:
+      - elk
+    depends_on:
+      elasticsearch:
+        condition: service_healthy    
+
 networks:
   elk:
     driver: bridge
 
 volumes:
   elasticsearch:
+    driver: local
+  safepass_log:
+    driver: local
