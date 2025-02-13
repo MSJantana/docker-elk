@@ -41,6 +41,7 @@ services:
       - elk
     depends_on:
       elasticsearch:
+        condition: service_healthy
       timeout: 5s
 
   logstash:
