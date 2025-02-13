@@ -110,7 +110,7 @@ services:
     depends_on:
       - elasticsearch        
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://10.12.2.246:9200
       - ELASTIC_USERNAME=${ELASTIC_USERNAME}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ports:
