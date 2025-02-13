@@ -104,6 +104,39 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+   # Serviço da aplicação Gerador de Senhas
+  safepass:
+    container_name: safepass
+    image: msoftsantana/safepass:latest
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME:-}  # Adicionado usuário
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-}  # Adicionado senha
+    ports:
+      - "9090:80"
+    networks:
+      - elk
+    labels:
+      service: safepass
+      monitoring: enabled
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+        tag: "{{.Name}}"
+    volumes:
+      - safepass_log:/usr/local/apache2/logs
+      
+   #Serviço de Aplicação cerebro   
+  cerebro:
+    container_name: cerebro
+    image: yannart/cerebro
+    ports:
+      - "9000:9000"
+    networks:
+      - elk     
+
 networks:
   elk:
     driver: bridge
