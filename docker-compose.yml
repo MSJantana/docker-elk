@@ -143,3 +143,5 @@ networks:
 
 volumes:
   elasticsearch:
+  safepass_log:  
+    driver: local
