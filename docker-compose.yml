@@ -84,7 +84,8 @@ services:
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
 
   kibana:
@@ -101,17 +102,21 @@ services:
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
 
    # Serviço da aplicação Gerador de Senhas
   safepass:
     container_name: safepass
     image: msoftsantana/safepass:latest
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTIC_USERNAME=${ELASTIC_USERNAME:-}  # Adicionado usuário
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-}  # Adicionado senha
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ports:
       - "9090:80"
     networks:
