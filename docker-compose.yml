@@ -144,7 +144,6 @@ networks:
     driver: bridge
 
 volumes:
-  elasticsearch:
-    driver: local
+  elasticsearch:    
   safepass_log:
     driver: local
