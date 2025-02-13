@@ -108,8 +108,7 @@ services:
     container_name: safepass
     image: msoftsantana/safepass:latest
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - elasticsearch        
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTIC_USERNAME=${ELASTIC_USERNAME}
@@ -138,8 +137,7 @@ services:
     networks:
       - elk
     depends_on:
-      elasticsearch:
-        condition: service_healthy    
+      - elasticsearch
 
 networks:
   elk:
