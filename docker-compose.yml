@@ -68,8 +68,7 @@ services:
     networks:
       - elk
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - elasticsearch
     restart: unless-stopped
 
   kibana:
@@ -86,16 +85,16 @@ services:
     networks:
       - elk
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      depends_on:
+      - elasticsearch
     restart: unless-stopped
 
   safepass:
     container_name: safepass
     image: msoftsantana/safepass:latest
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - elasticsearch
+    restart: unless-stopped
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTIC_USERNAME=${ELASTIC_USERNAME}
@@ -124,8 +123,8 @@ services:
     networks:
       - elk
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - elasticsearch
+    restart: unless-stopped
 
 networks:
   elk:
