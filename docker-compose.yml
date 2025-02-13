@@ -41,12 +41,7 @@ services:
     environment:
       node.name: elasticsearch
       ES_JAVA_OPTS: -Xms512m -Xmx512m
-      # Bootstrap password.
-      # Used to initialize the keystore during the initial startup of
-      # Elasticsearch. Ignored on subsequent runs.
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
-      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       discovery.type: single-node
     networks:
       - elk
@@ -75,8 +70,8 @@ services:
     networks:
       - elk
     depends_on:
-      setup:
-        condition: service_completed_successfully
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
 
   kibana:
@@ -93,16 +88,16 @@ services:
     networks:
       - elk
     depends_on:
-      setup:
-        condition: service_completed_successfully
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
 
   safepass:
     container_name: safepass
     image: msoftsantana/safepass:latest
     depends_on:
-      setup:
-        condition: service_completed_successfully
+      elasticsearch:
+        condition: service_healthy
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTIC_USERNAME=${ELASTIC_USERNAME}
@@ -131,8 +126,8 @@ services:
     networks:
       - elk
     depends_on:
-      setup:
-        condition: service_completed_successfully
+      elasticsearch:
+        condition: service_healthy
 
 networks:
   elk:
